@@ -37,9 +37,9 @@
 
 <div class="audio-control" (click)="switchPlay()">
   <audio style="display: none;" #audio loop autoplay>
-    <source src="../addons/imeepos_runner/template/mobile/hunli/assets/audio2.mp3" type="audio/mpeg" />
+    <source [src]="_audioRandom" type="audio/mpeg" />
   </audio>
-  <img src="../addons/imeepos_runner/template/mobile/hunli/assets/images/music.png" alt="">
+  <img src="../addons/meepo_hunli/template/mobile/assets/images/music.png" alt="">
 </div>
 
 <div class="main-info">

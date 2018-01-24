@@ -43,6 +43,17 @@ export const randomContents = [
   '房花烛交颈鸳鸯双得意，夫妻恩爱和鸣凤鸾两多情'
 ];
 
+const audios = [
+  'audio.mp3',
+  'audio3.mp3',
+  'audio4.mp3',
+  'audio5.mp3',
+  'audio6.mp3',
+  'audio7.mp3',
+  'audio8.mp3',
+  'audio9.mp3'
+];
+
 export interface FuyueForms {
   realname?: string;
   mobile?: string;
@@ -65,6 +76,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.nowIndex$.next(args[1]);
     }
   };
+  _audioRandom: string;
 
   nowIndex$: Subject<number>;
   showAdv: boolean = true;
@@ -97,18 +109,31 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.nowIndex$ = new Subject();
     this.hasFuyue = localStorage.getItem('hasFuyue') ? true : false;
   }
+  setAudioRandom() {
+    this._audioRandom = `../addons/meepo_hunli/template/mobile/assets/${audios[Math.floor(Math.random() * audios.length)]}`;
+    if (this.audio) {
+      const audio = this.audio.nativeElement as HTMLAudioElement;
+      if (audio) {
+        audio.src = this._audioRandom;
+        audio.onload = () => {
+          audio.play();
+        };
+      }
+    }
+  }
 
   ngOnInit() {
+    this.setAudioRandom();
     this.width = document.documentElement.clientWidth;
     this.height = document.documentElement.clientHeight;
     setTimeout(() => {
       this.showAdv = false;
     }, 3000);
     document.addEventListener('WeixinJSBridgeReady', () => {
-      this.play();
+      this.audio.nativeElement.play();
     }, false);
     document.addEventListener('YixinJSBridgeReady', () => {
-      this.play();
+      this.audio.nativeElement.play();
     }, false);
     if (isDevMode()) {
       this.socket = io('http://localhost:1314');
@@ -202,19 +227,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   switchPlay() {
-    if (this.audio.nativeElement.paused) {
-      this.play();
-    } else {
-      this.pause();
-    }
-  }
-
-  play() {
+    this.setAudioRandom();
     this.audio.nativeElement.play();
-  }
-
-  pause() {
-    this.audio.nativeElement.pause();
   }
 
   doSend() {
