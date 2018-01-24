@@ -16,7 +16,7 @@
   </div>
 </div>
 
-<danmu-item (onNext)="createNextComponents($event)" [len]="item.content.length" [isnew]="item?.isnew" [item]="item" [avatar]="item.avatar" *ngFor="let item of components">
+<danmu-item (onCenter)="onCenter($event)" (onNext)="createNextComponents($event)" [len]="item.content.length" [isnew]="item?.isnew" [item]="item" [avatar]="item.avatar" *ngFor="let item of components">
   {{item.content}}
 </danmu-item>
 

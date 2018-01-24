@@ -25,6 +25,9 @@ export class DanmuItemComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() item: any;
 
     @Output() onNext: EventEmitter<number> = new EventEmitter();
+    @Output() onCenter: EventEmitter<number> = new EventEmitter();
+
+    hasCenter: boolean = false;
 
     @Input()
     set len(len: number) {
@@ -61,7 +64,7 @@ export class DanmuItemComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.isnew) {
             this._right = - Math.random() * this.width + 200;
         } else {
-            this._right = - Math.random() * this.width - 300;
+            this._right = - Math.random() * this.width * 2;
         }
     }
 
@@ -69,6 +72,12 @@ export class DanmuItemComponent implements OnInit, AfterViewInit, OnDestroy {
         const width = this.ele.nativeElement.clientWidth;
         this.timer = setInterval(() => {
             this._right++;
+            if (this._right > this.width / 2) {
+                if (!this.hasCenter) {
+                    this.onCenter.emit(this.item);
+                    this.hasCenter = true;
+                }
+            }
             if (this._right > this.width) {
                 // this.randomPosition();
                 clearInterval(this.timer);

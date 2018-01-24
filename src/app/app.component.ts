@@ -209,17 +209,18 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   createNextComponents(index: any) {
-    this.begin++;
     this.components.indexOf(index);
     this.components.splice(index, 1);
-    setTimeout(() => {
-      if (this.begin < this.allComponents.length) {
-        this.components.push(this.allComponents[this.begin]);
-      } else {
-        this.begin = 0;
-        this.components.push(this.allComponents[this.begin]);
-      }
-    }, 600);
+  }
+
+  onCenter() {
+    this.begin++;
+    if (this.begin < this.allComponents.length) {
+      this.components.push(this.allComponents[this.begin]);
+    } else {
+      this.begin = 0;
+      this.components.push(this.allComponents[this.begin]);
+    }
   }
 
   ngAfterViewInit() {
