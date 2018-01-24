@@ -5,6 +5,7 @@
 /tmp
 /out-tsc
 /service/node_modules
+/meepo_hunli/template
 
 
 # dependencies
