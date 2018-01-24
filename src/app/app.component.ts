@@ -9,6 +9,7 @@ import { DanmuItemComponent } from './danmus/danmu-item';
 import { HttpClient } from '@angular/common/http';
 import { ElementRef } from '@angular/core';
 import * as io from 'socket.io-client';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 export const randomContents = [
   '为我们送上祝福吧',
   '新郎帅不帅',
@@ -41,6 +42,16 @@ export const randomContents = [
   '白首齐眉鸳鸯比翼，青阳启瑞桃李同心。',
   '房花烛交颈鸳鸯双得意，夫妻恩爱和鸣凤鸾两多情'
 ];
+
+export interface FuyueForms {
+  realname?: string;
+  mobile?: string;
+  openid?: string;
+  avatar?: string;
+  content?: string;
+  nickname?: string;
+  create_time?: number;
+}
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -58,10 +69,13 @@ export class AppComponent implements OnInit, AfterViewInit {
   nowIndex$: Subject<number>;
   showAdv: boolean = true;
   components: any[] = [];
+  allComponents: any[] = [];
 
   @ViewChild('audio') audio: ElementRef;
   @ViewChild('video') video: ElementRef;
   @ViewChild('send') send: ElementRef;
+  @ViewChild('footer') footer: ElementRef;
+
 
   hasFuyue: boolean = false;
 
@@ -72,6 +86,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   showFuyue: boolean = false;
 
   fuyues: any[] = [];
+  fuyueForm: FuyueForms = {};
+  begin: number = 10;
 
   constructor(
     private _view: ViewContainerRef,
@@ -79,12 +95,12 @@ export class AppComponent implements OnInit, AfterViewInit {
     public render: Renderer2
   ) {
     this.nowIndex$ = new Subject();
+    this.hasFuyue = localStorage.getItem('hasFuyue') ? true : false;
   }
 
   ngOnInit() {
     this.width = document.documentElement.clientWidth;
     this.height = document.documentElement.clientHeight;
-    this.createRandomComponents();
     setTimeout(() => {
       this.showAdv = false;
     }, 3000);
@@ -102,13 +118,15 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.socket.emit('hunli.discuss', '');
     this.socket.on('hunli.discuss', (list) => {
       const lists = [];
+      // 所有的评论
       list.map((li: any) => {
         lists.push({
           avatar: li.avatar,
           content: li.content
         });
       });
-      this.components = lists;
+      this.allComponents = list;
+      this.createRandomComponents();
     });
 
     this.socket.on('hunli.discuss.add', (item) => {
@@ -118,16 +136,65 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     this.socket.on('hunli.fuyue.add', (item) => {
       item['isnew'] = true;
-      this.fuyues.push(item);
+      this.fuyues.unshift(item);
     });
-
+    this.socket.emit('hunli.fuyue', '');
     this.socket.on('hunli.fuyue', (item) => {
       this.fuyues = item || [];
     });
+    this.initWx();
+
+    fromEvent(this.send.nativeElement, 'focus').subscribe(res => {
+      this.render.setStyle(this.footer.nativeElement, 'position', 'absolute');
+    });
+    fromEvent(this.send.nativeElement, 'bulr').subscribe(res => {
+      this.render.setStyle(this.footer.nativeElement, 'position', 'fixed');
+    });
   }
 
-  private createRandomComponents(total: number = 10) {
+  initWx() {
+    wx.ready(() => {
+      const data = {
+        title: '杨明明&闫聪玲-我们要结婚啦',
+        desc: '时间：农历22，阳历2月7号,地址： 安阳市滑县万古镇棘马林村',
+        link: sysinfo.siteurl,
+        imgUrl: 'https://meepo.com.cn/addons/meepo_hunli/template/mobile/assets/images/8.lazy.png',
+        success: () => {
+          console.log('share success');
+        },
+        cancel: () => {
+          console.log('share cancel');
+        }
+      };
+      wx.onMenuShareTimeline(data);
+      wx.onMenuShareAppMessage(data);
+      wx.onMenuShareQQ(data);
+      wx.onMenuShareWeibo(data);
+      wx.onMenuShareQZone(data);
+    });
+  }
+  // 创建初始随机评论
+  private createRandomComponents() {
+    localStorage.setItem('allComponents', JSON.stringify(this.allComponents));
+    this.allComponents.map((res, index) => {
+      if (index <= this.begin) {
+        this.components.push(res);
+      }
+    });
+  }
 
+  createNextComponents(index: any) {
+    this.begin++;
+    this.components.indexOf(index);
+    this.components.splice(index, 1);
+    setTimeout(() => {
+      if (this.begin < this.allComponents.length) {
+        this.components.push(this.allComponents[this.begin]);
+      } else {
+        this.begin = 0;
+        this.components.push(this.allComponents[this.begin]);
+      }
+    }, 600);
   }
 
   ngAfterViewInit() {
@@ -152,6 +219,10 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   doSend() {
     const content = this.send.nativeElement.value;
+    if (content.length < 3) {
+      alert('太吝啬了吧,3个字都不给我!');
+      return '';
+    }
     const data = {
       content: content,
       openid: UserInfo.openid,
@@ -165,8 +236,18 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.showFuyue = true;
   }
 
-  confirmFuyue(e: any) {
-    this.socket.emit('hunli.fuyue.add', e);
+  confirmFuyue() {
+    this.fuyueForm.openid = UserInfo.openid;
+    this.fuyueForm.avatar = UserInfo.avatar;
+    this.fuyueForm.nickname = UserInfo.nickname;
+    this.fuyueForm.create_time = Math.floor(new Date().getTime() / 1000);
+    this.fuyueForm.content = this.send.nativeElement.value;
+    this.socket.emit('hunli.fuyue.add', this.fuyueForm);
+    // 初始化
+    this.hasFuyue = true;
+    this.showFuyue = false;
+    localStorage.setItem('hasFuyue', 'true');
+    this.send.nativeElement.value = '';
   }
 
   cancelFuyue(e: any) {

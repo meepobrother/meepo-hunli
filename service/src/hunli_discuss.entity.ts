@@ -28,5 +28,9 @@ export class ImsImeeposHunliFuyue {
 
     @Column() openid: string;
 
+    @Column() realname: string;
+    @Column() mobile: string;
+    @Column() nickname: string;
+
     @Column() create_time: number;
 }

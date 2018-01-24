@@ -8,6 +8,7 @@ import { HunliDiscussService, HunliFuyueService } from './hunli_discuss.service'
     components: [
         ...HunliDiscussProviders,
         HunliDiscussService,
+        HunliFuyueService,
     ],
     exports: [HunliDiscussService, HunliFuyueService],
 })

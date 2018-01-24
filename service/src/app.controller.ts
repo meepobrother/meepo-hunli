@@ -33,9 +33,11 @@ export class AppGeteway {
   @SubscribeMessage('hunli.fuyue.add')
   async handelHunliFuyueAdd(sender, data) {
     const item = await this.fuyue.addOne(data);
-    const list = await this.fuyue.findAll();
-    sender.broadcast.emit('hunli.discuss.add', data);
-    sender.emit('hunli.discuss.add', data);
+    if (item) {
+      const list = await this.fuyue.findAll();
+      sender.broadcast.emit('hunli.fuyue.add', data);
+      sender.emit('hunli.fuyue.add', data);
+    }
   }
 }
 

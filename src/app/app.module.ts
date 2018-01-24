@@ -14,10 +14,9 @@ import { DialogComponent } from './dialog/dialog';
 
 
 import { DanmuItemComponent } from './danmus/danmu-item';
-
 import { NoticeBarModule } from 'ng-antd-mobile-notice-bar';
-
 import { BASE_SRC } from './lazyload-background/lazyload-background';
+import { ListModule, InputItemModule } from 'ng-antd-mobile';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +31,9 @@ import { BASE_SRC } from './lazyload-background/lazyload-background';
     LazyLoadImageModule,
     MnFullpageModule.forRoot(),
     HttpClientModule,
-    NoticeBarModule
+    NoticeBarModule,
+    ListModule,
+    InputItemModule
   ],
   providers: [
     {

@@ -9,7 +9,10 @@ export class HunliDiscussService {
     ) { }
 
     async findAll(): Promise<ImsImeeposHunliDiscuss[]> {
-        return await this.photoRepository.find();
+        return this.photoRepository.createQueryBuilder()
+            .where({})
+            .orderBy('create_time', 'DESC')
+            .getMany();
     }
 
     async addOne(item: ImsImeeposHunliDiscuss): Promise<void> {
@@ -23,11 +26,26 @@ export class HunliFuyueService {
         @Inject('HunliFuyueRepositoryToken') private readonly photoRepository: Repository<ImsImeeposHunliFuyue>
     ) { }
 
-    async findAll(): Promise<ImsImeeposHunliDiscuss[]> {
-        return await this.photoRepository.find();
+    async findAll(): Promise<ImsImeeposHunliFuyue[]> {
+        return this.photoRepository.createQueryBuilder()
+            .where({})
+            .orderBy('create_time', 'DESC')
+            .getMany();
     }
 
-    async addOne(item: ImsImeeposHunliDiscuss): Promise<void> {
+    async addOne(item: ImsImeeposHunliFuyue): Promise<void> {
+        const exist = await this.checkExist(item);
+        if (exist) {
+            return null;
+        }
         return await this.photoRepository.insert(item);
+    }
+
+    async checkExist(item: ImsImeeposHunliFuyue): Promise<boolean> {
+        const exist = await this.photoRepository
+            .createQueryBuilder()
+            .where({ mobile: item.mobile })
+            .getOne();
+        return exist ? true : false;
     }
 }

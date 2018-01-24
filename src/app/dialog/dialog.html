@@ -1,3 +1,12 @@
-<div class="fuyue-dialog">
-    
-</div>
+<list>
+    <div style="text-align: center;padding-top: 5px;color: gray;">
+        填写联系方式
+        <a (click)="cancel()" style="float: right;margin-right: 10px;">关闭</a>
+    </div>
+    <input-item (onChange)="inputRealname($event)" placeholder="请输入姓名" type="text">
+        姓名
+    </input-item>
+    <input-item (onChange)="inputMobile($event)" placeholder="请输入联系电话" type="number">
+        电话
+    </input-item>
+</list>

@@ -4,6 +4,7 @@ import {
     InjectionToken, Injector, OnDestroy
 } from '@angular/core';
 import { BASE_SRC } from './lazyload-background';
+import { isDevMode } from '@angular/core';
 @Directive({ selector: '[lazyload]' })
 export class LazyloadDirective implements OnInit, OnDestroy, AfterViewInit {
     private _imageSrc: string;
@@ -23,7 +24,11 @@ export class LazyloadDirective implements OnInit, OnDestroy, AfterViewInit {
         private ele: ElementRef,
         private injector: Injector
     ) {
-        this.src = this.injector.get(BASE_SRC, './') as string;
+        if (isDevMode()) {
+            this.src = './';
+        } else {
+            this.src = this.injector.get(BASE_SRC, './') as string;
+        }
     }
 
     ngOnDestroy() {

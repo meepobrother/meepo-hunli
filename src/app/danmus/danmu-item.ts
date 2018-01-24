@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import { HostBinding } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
+import { EventEmitter, Output } from '@angular/core';
 
 @Component({
     selector: 'danmu-item',
@@ -21,6 +22,9 @@ export class DanmuItemComponent implements OnInit, AfterViewInit, OnDestroy {
     @HostBinding('style.max-width.em') _maxWidth: number = 0;
 
     @Input() avatar: string;
+    @Input() item: any;
+
+    @Output() onNext: EventEmitter<number> = new EventEmitter();
 
     @Input()
     set len(len: number) {
@@ -31,7 +35,7 @@ export class DanmuItemComponent implements OnInit, AfterViewInit, OnDestroy {
     height: number;
 
     timeLen: number;
-    fps: number = 40;
+    fps: number = 60;
     timer: any;
 
     @Input() isnew: boolean = false;
@@ -57,7 +61,7 @@ export class DanmuItemComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.isnew) {
             this._right = - Math.random() * this.width + 200;
         } else {
-            this._right = - Math.random() * this.width - 200;
+            this._right = - Math.random() * this.width - 300;
         }
     }
 
@@ -66,7 +70,9 @@ export class DanmuItemComponent implements OnInit, AfterViewInit, OnDestroy {
         this.timer = setInterval(() => {
             this._right++;
             if (this._right > this.width) {
-                this.randomPosition();
+                // this.randomPosition();
+                clearInterval(this.timer);
+                this.onNext.emit(this.item);
             }
         }, this.timeLen);
     }
