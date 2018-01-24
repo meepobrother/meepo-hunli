@@ -1,0 +1,38 @@
+.danmu-item {
+    position: fixed;
+    height: 44px;
+    background: rgba(0, 0, 0, .5);
+    overflow: visible;
+    z-index: 9;
+    width: auto;
+    color: #fff;
+    padding: 0 10px;
+    border-radius: 10px;
+    max-width: 10em;
+    min-width: 10em;
+    .danmu-item-wrap {
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .danmu-item-avatar {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 3em;
+            min-width: 3em;
+            img {
+                height: 2em;
+                width: 2em;
+                border-radius: 50%;
+            }
+        }
+        .danmu-item-content {
+            flex: 1;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
