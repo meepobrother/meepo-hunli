@@ -1,9 +1,12 @@
 # 婚礼互动
 
-> https://github.com/meepobrother/meepo-hunli  mysql+nestjs+typeorm+mysql+angular 小项目自用
+>   mysql+nestjs+typeorm+mysql+angular 小项目自用
+
+- [demo](https://meepo.com.cn/app/index.php?i=2&c=entry&do=index&m=meepo_hunli)
 
 
-- 客户端
+
+- 微信端
 
 ```sh
 git clone https://github.com/meepobrother/meepo-hunli.git
