@@ -42,7 +42,7 @@ import { ListModule, InputItemModule } from 'ng-antd-mobile';
     },
     {
       provide: BASE_SRC,
-      useValue: '../addons/imeepos_runner/template/mobile/hunli/'
+      useValue: '../addons/meepo_hunli/template/mobile/'
     }
   ],
   entryComponents: [DanmuItemComponent],

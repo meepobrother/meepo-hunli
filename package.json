@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open",
-    "build": "ng build --prod",
+    "build": "ng build --prod --deploy-url ../addons/meepo_hunli/template/mobile/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
