@@ -7,19 +7,15 @@
     <img [lazyload]="user.avatar" *ngFor="let user of fuyues" />
   </div>
 </div>
-
 <dialog *ngIf="showFuyue" [(model)]="fuyueForm" (onCancel)="cancelFuyue($event)"></dialog>
-
 <div mnFullpage [mnFullpageAfterLoad]="cfg.mnFullpageAfterLoad">
   <div *ngFor="let i of [1,2,3,4,5,6,7,8,9]" [nowIndex]="nowIndex$" [lazyBackground]="i" class="section welcome-section fp-section fp-table">
     <div class="fp-tableCell"></div>
   </div>
 </div>
-
 <danmu-item (onCenter)="onCenter($event)" (onNext)="createNextComponents($event)" [len]="item.content.length" [isnew]="item?.isnew" [item]="item" [avatar]="item.avatar" *ngFor="let item of components">
   {{item.content}}
 </danmu-item>
-
 <div class="footer" #footer>
   <div class="footer-wrap">
     <div class="footer-cancel" *ngIf="!hasFuyue" [class.active]="hasFuyue">
@@ -34,14 +30,12 @@
     </div>
   </div>
 </div>
-
 <div class="audio-control" (click)="switchPlay()">
   <audio style="display: none;" #audio loop autoplay>
     <source [src]="_audioRandom" type="audio/mpeg" />
   </audio>
   <img src="../addons/meepo_hunli/template/mobile/assets/images/music.png" alt="">
 </div>
-
 <div class="main-info">
   <p>地址： 安阳市滑县万古镇棘马林村</p>
   <p>电话：

@@ -103,10 +103,12 @@ video {
     .info {
         color: #fff;
         background: red;
-        padding-right: 20px;
-        padding-left: 10px;
-        min-width: 40px;
-        font-size: 16px;
+        padding-right: 0px;
+        min-width: 64px;
+        width: 64px;
+        font-size: 14px;
+        height: 45px;
+        line-height: 45px;
     }
     img {
         width: 30px;

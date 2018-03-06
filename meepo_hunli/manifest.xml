@@ -3,7 +3,7 @@
 	<application setting="false">
 		<name><![CDATA[婚礼邀请函]]></name>
 		<identifie><![CDATA[meepo_hunli]]></identifie>
-		<version><![CDATA[1.0]]></version>
+		<version><![CDATA[1.1]]></version>
 		<type><![CDATA[business]]></type>
 		<ability><![CDATA[自用婚礼邀请函]]></ability>
 		<description><![CDATA[如需更高级功能，联系客服定制2486131475]]></description>
@@ -25,10 +25,13 @@
 		<cover>
 			<entry title="首页" do="index" state="" direct="false" />
 		</cover>
+		<menu>
+			<entry title="首页" do="index" state="" direct="false" />
+		</menu>
 	</bindings>
 	<permissions>
 	</permissions>
-	<install><![CDATA[]]></install>
-	<uninstall><![CDATA[]]></uninstall>
-	<upgrade><![CDATA[]]></upgrade>
+	<install><![CDATA[install.php]]></install>
+	<uninstall><![CDATA[uninstall.php]]></uninstall>
+	<upgrade><![CDATA[upgrade.php]]></upgrade>
 </manifest>

@@ -1,0 +1,3 @@
+[submodule "rx"]
+	path = rx
+	url = https://github.com/meepobrother/meepo-rxjs.git
